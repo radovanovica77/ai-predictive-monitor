@@ -20,7 +20,9 @@ from prediction_engine.models import Evidence, Scenario, Severity, TrendInfo
 # Template functions — each takes Evidence and returns a str message
 # ------------------------------------------------------------------
 
-def _fmt_hours(h: float) -> str:
+def _fmt_hours(h: float | None) -> str:
+    if h is None or h <= 0:
+        return "imminently (< 15 min)"
     if h < 1:
         m = int(h * 60)
         return f"~{m} min"

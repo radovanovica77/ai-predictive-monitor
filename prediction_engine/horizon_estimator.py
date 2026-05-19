@@ -88,7 +88,16 @@ def estimate_horizon(
     horizon_minutes = _extrapolate_best(values, t_minutes, threshold, direction)
 
     if horizon_minutes is None or horizon_minutes <= 0:
-        return None, trend
+        # Fallback: simple linear extrapolation from current value and slope
+        if trend.slope_per_minute != 0:
+            current = float(values[-1])
+            gap = (threshold - current) if direction == "above" else (current - threshold)
+            if gap > 0 and abs(trend.slope_per_minute) > 1e-9:
+                horizon_minutes = gap / abs(trend.slope_per_minute)
+            else:
+                return None, trend
+        else:
+            return None, trend
 
     horizon_hours = horizon_minutes / 60.0
     horizon_hours = max(MIN_HORIZON_HOURS, min(MAX_HORIZON_HOURS, horizon_hours))
