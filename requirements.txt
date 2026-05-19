@@ -1,0 +1,35 @@
+# Core
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+pydantic==2.10.3
+pydantic-settings==2.6.1
+
+# Data pipeline
+numpy==2.2.0
+pandas==2.2.3
+psutil==6.1.0
+
+# ML - anomaly detection
+scikit-learn==1.6.0
+pyod==2.0.2
+joblib==1.4.2
+
+# ML - time series forecasting
+prophet==1.1.6
+
+# Storage
+influxdb-client==1.47.0
+
+# Config
+pyyaml==6.0.2
+
+# Logging
+structlog==24.4.0
+
+# Async
+aiofiles==24.1.0
+
+# Dev / testing
+pytest==8.3.4
+pytest-asyncio==0.24.0
+httpx==0.28.1

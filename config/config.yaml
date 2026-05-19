@@ -1,0 +1,70 @@
+app:
+  name: "AI Predictive Monitor"
+  version: "1.0.0"
+  log_level: "INFO"
+
+pipeline:
+  collection_interval_seconds: 10
+  batch_write_interval_seconds: 5
+  queue_max_size: 10000
+
+storage:
+  backend: "sqlite"  # options: sqlite, influxdb
+  sqlite:
+    path: "data/metrics.db"
+  influxdb:
+    url: "http://localhost:8086"
+    token: ""
+    org: "predictive-monitor"
+    bucket: "metrics"
+
+simulator:
+  enabled: true
+  speed_multiplier: 60  # 1 simulated minute per real second
+  scenarios:
+    - name: "connection_pool_exhaustion"
+      enabled: true
+      duration_hours: 12
+    - name: "memory_leak"
+      enabled: true
+      duration_hours: 24
+    - name: "traffic_spike"
+      enabled: true
+      duration_hours: 8
+    - name: "latency_degradation"
+      enabled: true
+      duration_hours: 10
+    - name: "disk_fill"
+      enabled: true
+      duration_hours: 48
+
+ml:
+  retrain_interval_hours: 6
+  min_training_points: 500
+  anomaly_threshold: 0.65
+  isolation_forest:
+    contamination: 0.05
+    n_estimators: 100
+    window_size: 30
+  prophet:
+    forecast_horizon_hours: 24
+    confidence_interval: 0.95
+    seasonality_mode: "multiplicative"
+
+prediction:
+  min_confidence: 0.50
+  horizon_min_hours: 2
+  horizon_max_hours: 24
+  thresholds:
+    db_connections_pct: 90
+    memory_pct: 85
+    cpu_pct: 90
+    disk_pct: 90
+    latency_p99_ms: 1000
+    error_rate_pct: 5
+
+dashboard:
+  host: "0.0.0.0"
+  port: 8000
+  websocket_ping_interval: 30
+  max_history_hours: 48
