@@ -10,7 +10,7 @@ Instead of: *"Anomaly detected."*
 
 ## Screenshot
 
-> *Dashboard screenshot — add after first run at `http://localhost:8000`*
+![AI Predictive Monitor Dashboard](screenshot.png)
 
 ---
 
