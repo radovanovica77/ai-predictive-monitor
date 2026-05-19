@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Predictive Monitor</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" />
+</head>
+<body>
+<div class="app">
+
+  <!-- ── Header ─────────────────────────────── -->
+  <header class="header">
+    <div class="header-brand">
+      <div class="logo-dot"></div>
+      <h1>AI Predictive Monitor</h1>
+    </div>
+    <div class="header-meta">
+      <span id="last-updated">—</span>
+      <div class="ws-status">
+        <div class="ws-dot connecting" id="ws-dot"></div>
+        <span id="ws-label">Connecting...</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Alert Banner (CRITICAL only) ────────── -->
+  <div class="alert-banner" id="alert-banner">
+    <span class="alert-icon">&#9888;</span>
+    <span id="alert-text">Critical prediction active</span>
+  </div>
+
+  <!-- ── Initialising overlay ─────────────────── -->
+  <div class="init-overlay" id="init-overlay">
+    <div class="spinner"></div>
+    <p>Generating simulation data and training models...</p>
+    <p id="init-status" style="color:#4b5563;font-size:12px;">This takes ~15 seconds on first run.</p>
+  </div>
+
+  <!-- ── Main content ──────────────────────────── -->
+  <main class="main" id="main-content" style="display:none;">
+
+    <!-- Active Predictions -->
+    <div style="margin-bottom: 32px;">
+      <div class="section-header">
+        <span class="section-title">Active Predictions</span>
+        <span class="section-badge" id="pred-count">0 predictions</span>
+      </div>
+      <div class="predictions-grid" id="predictions-grid">
+        <div class="no-predictions">No predictions yet — waiting for anomaly detection...</div>
+      </div>
+    </div>
+
+    <!-- Metrics Overview -->
+    <div>
+      <div class="section-header">
+        <span class="section-title">Live Metrics</span>
+        <span class="section-badge" id="metrics-count">—</span>
+      </div>
+      <div class="metrics-grid" id="metrics-grid"></div>
+    </div>
+
+  </main>
+
+  <!-- ── Footer ───────────────────────────────── -->
+  <footer class="footer">
+    <span>AI Predictive Monitor</span>
+    <div class="footer-right">
+      <span id="footer-clients">0 clients</span>
+      <span id="footer-clock">—</span>
+    </div>
+  </footer>
+
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

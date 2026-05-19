@@ -106,13 +106,14 @@ class ProphetModel(BaseAnomalyModel):
         if not self._fitted or self._last_forecast is None:
             return []
 
-        timestamps = pd.to_datetime(df["timestamp"]).dt.tz_localize(None)
+        ts_series = pd.to_datetime(df["timestamp"])
+        timestamps = ts_series.dt.tz_convert(None) if ts_series.dt.tz is not None else ts_series
         forecast = self._last_forecast.set_index("ds")[["yhat", "yhat_lower", "yhat_upper"]]
 
         results = []
         for i, (ts, val) in enumerate(zip(timestamps, df["value"])):
             # find nearest forecast point
-            idx = (forecast.index - ts).abs().argmin()
+            idx = np.abs((forecast.index - ts).total_seconds()).argmin()
             row = forecast.iloc[idx]
 
             yhat, lower, upper = row["yhat"], row["yhat_lower"], row["yhat_upper"]
@@ -131,6 +132,8 @@ class ProphetModel(BaseAnomalyModel):
             ts_orig = df["timestamp"].iloc[i]
             if not isinstance(ts_orig, datetime):
                 ts_orig = pd.Timestamp(ts_orig).to_pydatetime()
+            if ts_orig.tzinfo is not None:
+                ts_orig = ts_orig.replace(tzinfo=None)
 
             results.append(
                 AnomalyScore(

@@ -89,6 +89,7 @@ class AnomalyScorer:
     ) -> float | None:
         if not prophet_map:
             return None
-        closest = min(prophet_map.keys(), key=lambda ts: abs((ts - target).total_seconds()))
-        delta = abs((closest - target).total_seconds())
+        target_naive = target.replace(tzinfo=None) if target.tzinfo is not None else target
+        closest = min(prophet_map.keys(), key=lambda ts: abs((ts - target_naive).total_seconds()))
+        delta = abs((closest - target_naive).total_seconds())
         return prophet_map[closest] if delta <= max_delta_seconds else None
